@@ -10,7 +10,7 @@ import SignInPage from "./Components/SignInPage"
 import BookingPage from "./Components/BookingPage"
 import RegisterPage from "./Components/RegisterPage"
 
-import { getAllMovies } from './Services/moviesAPI';
+import MovieService from './Services/Movie_service';
 import AuthService from './Services/Auth_service';
 import Profile from './Components/Profile';
 
@@ -20,9 +20,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      moviesList: getAllMovies(),
+      moviesList: MovieService.getAllMovies(),
       currentUser: undefined,
-      isSignin: false
     }
   }
 

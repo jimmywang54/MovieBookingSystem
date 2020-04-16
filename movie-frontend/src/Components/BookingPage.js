@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getMovieDetails } from '../Services/moviesAPI';
+import MovieService from '../Services/Movie_service';
 
 class BookingPage extends Component {
 
@@ -7,7 +7,7 @@ class BookingPage extends Component {
         super(props);
 
         this.state = {
-            movie: getMovieDetails(this.props.match.params.movieId)
+            movie: MovieService.getMovieDetails(this.props.match.params.movieId)
         }
     }
 
