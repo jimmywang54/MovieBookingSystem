@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import { DropdownButton, Dropdown } from 'react-bootstrap';
+import { DropdownButton, Dropdown, Button } from 'react-bootstrap';
 
 import MoviePage from "./Components/MoviePage";
+import TheaterPage from "./Components/TheaterPage";
 import MainPage from "./Components/MainPage";
 import SignInPage from "./Components/SignInPage"
 import RegisterPage from "./Components/RegisterPage"
@@ -12,7 +13,7 @@ import BookingPage from './Components/BookingPage';
 import Profile from './Components/Profile';
 
 import AuthService from './Services/Auth_service';
-// import MovieService from './Services/Movie_service';
+import MovieService from './Services/Movie_service';
 
 class App extends Component {
 
@@ -20,17 +21,18 @@ class App extends Component {
     super(props);
 
     this.state = {
-      currentUser: undefined
+      currentUser: undefined,
+      theaters: MovieService.getTheaters()
     }
   }
 
 
   componentDidMount() {
     const user = AuthService.getCurrentUser();
-    
+
     if (user) {
       this.setState({
-        currentUser: AuthService.getCurrentUser()        
+        currentUser: AuthService.getCurrentUser()
       })
     }
 
@@ -43,36 +45,39 @@ class App extends Component {
 
   render() {
 
-    const { currentUser } = this.state;
-    
+    const { currentUser, theaters } = this.state;
+
     return (
       <Router>
         <div>
           <nav className="navbar navbar-expand navbar-dark bg-dark">
-            {/* <DropdownButton id="dropdown-basic-button" title={currentTheater.name}>
-              {
-                theaters.map(theater => (
-                  <div key={theater.name}>
-                    <Link to={"/"+theater.id}>
-                      <Dropdown.Item>{theater.name}</Dropdown.Item>
-                    </Link>
-                  </div>
-                ))
-              }
-            </DropdownButton> */}
             <Link to={"/"} className="navbar-brand">
               Best Movie Theater
             </Link>
             <div className="navbar-nav">
               <li className="nav-item">
                 <Link to={"/main"} className="nav-link">
-                  Home
+                  <Button>Home</Button>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to={"/movies"} className="nav-link">
-                  Movies
-            </Link>
+                  <Button>Movies</Button>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <DropdownButton id="dropdown-basic-button" title="Our Theater">
+                  {
+                    theaters.map(theater => (
+                      <div key={theater.name}>
+                        <Dropdown.Item href={"/theaters/" + theater.id}>
+                            {theater.name}
+                        </Dropdown.Item>
+
+                      </div>
+                    ))
+                  }
+                </DropdownButton>
               </li>
             </div>
 
@@ -80,12 +85,12 @@ class App extends Component {
               <div className="navbar-nav">
                 <li className="nav-item">
                   <Link to={"/profile"} className="nav-link">
-                    {currentUser.username}
+                    <Button>{currentUser.username}</Button>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <a href='/login' className="nav-link" onClick={this.logOut}>
-                    LogOut
+                    <Button>LogOut</Button>
                   </a>
                 </li>
               </div>
@@ -93,14 +98,14 @@ class App extends Component {
                 <div className="navbar-nav">
                   <li className="nav-item">
                     <Link to={"/login"} className="nav-link">
-                      Login
-                  </Link>
+                      <Button>Login</Button>
+                    </Link>
                   </li>
 
                   <li className="nav-item">
                     <Link to={"/register"} className="nav-link">
-                      Sign Up
-                  </Link>
+                      <Button>Sign Up</Button>
+                    </Link>
                   </li>
                 </div>
               )}
@@ -110,6 +115,7 @@ class App extends Component {
             <Switch>
               <Route exact path={["/", "/main"]} render={() => <MainPage />} />
               <Route exact path="/movies" render={() => <MoviePage />} />
+              <Route exact path="/theaters/:theaterId" component={TheaterPage} />
               <Route exact path="/profile" component={Profile} />
               <Route exact path="/register" render={() => <RegisterPage />} />
               <Route exact path="/login" render={() => <SignInPage />} />
@@ -119,7 +125,7 @@ class App extends Component {
           </div>
         </div>
       </Router>
-    );
+    )
   }
 }
 
