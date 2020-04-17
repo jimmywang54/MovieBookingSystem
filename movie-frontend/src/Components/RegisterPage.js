@@ -16,7 +16,7 @@ const required = value => {
     }
 };
 
-const email = value => {
+const vusername = value => {
     if (!isEmail(value)) {
         return (
             <div className="alert alert-danger" role="alert">
@@ -26,15 +26,15 @@ const email = value => {
     }
 };
 
-const vusername = value => {
-    if (value.length < 3 || value.length > 20) {
-        return (
-            <div className="alert alert-danger" role="alert">
-                The username must be between 3 and 20 characters.
-            </div>
-        );
-    }
-};
+// const vusername = value => {
+//     if (value.length < 3 || value.length > 20) {
+//         return (
+//             <div className="alert alert-danger" role="alert">
+//                 The username must be between 3 and 20 characters.
+//             </div>
+//         );
+//     }
+// };
 
 const vpassword = value => {
     if (value.length < 6 || value.length > 40) {
@@ -51,12 +51,10 @@ class RegisterPage extends Component {
         super(props);
         this.handleRegister = this.handleRegister.bind(this);
         this.onChangeUsername = this.onChangeUsername.bind(this);
-        this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
 
         this.state = {
             username: "",
-            email: "",
             password: "",
             successful: false,
             message: ""
@@ -66,12 +64,6 @@ class RegisterPage extends Component {
     onChangeUsername(e) {
         this.setState({
             username: e.target.value
-        });
-    }
-
-    onChangeEmail(e) {
-        this.setState({
-            email: e.target.value
         });
     }
 
@@ -94,7 +86,6 @@ class RegisterPage extends Component {
         if (this.checkBtn.context._errors.length === 0) {
             AuthService.register(
                 this.state.username,
-                // this.state.email,
                 this.state.password
             ).then(
                 response => {
@@ -139,26 +130,14 @@ class RegisterPage extends Component {
                         {!this.state.successful && (
                             <div>
                                 <div className="form-group">
-                                    <label htmlFor="username">Username</label>
-                                    <Input
-                                        type="text"
-                                        className="form-control"
-                                        name="username"
-                                        value={this.state.username}
-                                        onChange={this.onChangeUsername}
-                                        validations={[required, vusername]}
-                                    />
-                                </div>
-
-                                <div className="form-group">
-                                    <label htmlFor="email">Email</label>
+                                    <label htmlFor="email">Username</label>
                                     <Input
                                         type="text"
                                         className="form-control"
                                         name="email"
-                                        value={this.state.email}
-                                        onChange={this.onChangeEmail}
-                                        validations={[required, email]}
+                                        value={this.state.username}
+                                        onChange={this.onChangeUsername}
+                                        validations={[required, vusername]}
                                     />
                                 </div>
 
@@ -195,7 +174,7 @@ class RegisterPage extends Component {
                             </div>
                         )}
                         <CheckButton
-                            style={{ display: "inline" }}
+                            style={{ display: "none" }}
                             ref={c => {
                                 this.checkBtn = c;
                             }}

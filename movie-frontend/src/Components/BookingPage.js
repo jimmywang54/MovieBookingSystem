@@ -7,19 +7,42 @@ class BookingPage extends Component {
         super(props);
 
         this.state = {
-            movie: MovieService.getMovieDetails(this.props.match.params.movieId)
+            movieId: props.match.params.movieId,
+            movieDetail: undefined
+            // movieLayout: MovieService.getMovieLayout(movieDetail)
         }
     }
 
+    componentDidMount() {
+        this.setState({
+            movieDetail: MovieService.getMovieDetails(this.state.movieId)
+        })
+    }
+
     render() {
+        // const { movieId, movieDetail, movieLayout } = this.state;
+        const { movieDetail } = this.state;
+
         return (
             <div>
-                <p>The movie you want to book:</p>
-                <p>Movie Name: {this.state.movie.name}</p>
-                <p>Price: {this.state.movie.pricePerTicket}</p>
+                {movieDetail ? (
+                    <div>
+                        <p>The movie you want to book:</p>
+                        <p>ID: {movieDetail.name}</p>
+                        <label>choose the time:
+                            <select value={this.state.movieDate} onChange={this.handleSelectTime}>
+                        {
+                            movieDetail.times.map(time => (
+                                <option key={time} value={time}>{time}</option>
+                            ))
+                        }
+                            </select>
+                        </label>
+                    </div>
+                ) : (
+                        <div></div>
+                    )}
             </div>
-            
-            
         )
     }
 }

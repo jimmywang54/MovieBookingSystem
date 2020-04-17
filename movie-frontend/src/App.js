@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+// import { DropdownButton, Dropdown } from 'react-bootstrap';
 
 import MoviePage from "./Components/MoviePage";
-import User from "./Components/User";
 import MainPage from "./Components/MainPage";
 import SignInPage from "./Components/SignInPage"
-import BookingPage from "./Components/BookingPage"
 import RegisterPage from "./Components/RegisterPage"
-
-import MovieService from './Services/Movie_service';
-import AuthService from './Services/Auth_service';
+import BookingPage from './Components/BookingPage';
 import Profile from './Components/Profile';
+
+import AuthService from './Services/Auth_service';
+// import MovieService from './Services/Movie_service';
 
 class App extends Component {
 
@@ -20,18 +20,17 @@ class App extends Component {
     super(props);
 
     this.state = {
-      moviesList: MovieService.getAllMovies(),
-      currentUser: undefined,
+      currentUser: undefined
     }
   }
 
 
   componentDidMount() {
     const user = AuthService.getCurrentUser();
-
+    
     if (user) {
       this.setState({
-        currentUser: AuthService.getCurrentUser()
+        currentUser: AuthService.getCurrentUser()        
       })
     }
 
@@ -45,33 +44,36 @@ class App extends Component {
   render() {
 
     const { currentUser } = this.state;
-
+    
     return (
       <Router>
         <div>
           <nav className="navbar navbar-expand navbar-dark bg-dark">
+            {/* <DropdownButton id="dropdown-basic-button" title={currentTheater.name}>
+              {
+                theaters.map(theater => (
+                  <div key={theater.name}>
+                    <Link to={"/"+theater.id}>
+                      <Dropdown.Item>{theater.name}</Dropdown.Item>
+                    </Link>
+                  </div>
+                ))
+              }
+            </DropdownButton> */}
             <Link to={"/"} className="navbar-brand">
               Best Movie Theater
             </Link>
             <div className="navbar-nav">
               <li className="nav-item">
-                <Link to={"main"} className="nav-link">
+                <Link to={"/main"} className="nav-link">
                   Home
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to={"movies"} className="nav-link">
+                <Link to={"/movies"} className="nav-link">
                   Movies
             </Link>
               </li>
-
-              {currentUser && (
-                <li className="nav-item">
-                  <Link to={"/user"} className="nav-link">
-                    User
-                  </Link>
-                </li>
-              )}
             </div>
 
             {currentUser ? (
@@ -107,12 +109,12 @@ class App extends Component {
           <div className="container-routes">
             <Switch>
               <Route exact path={["/", "/main"]} render={() => <MainPage />} />
-              <Route exact path="/movies" render={() => <MoviePage {... this.state} />} />
+              <Route exact path="/movies" render={() => <MoviePage />} />
               <Route exact path="/profile" component={Profile} />
-              <Route exact path="/bookingPage/:movieId" component={BookingPage} />
               <Route exact path="/register" render={() => <RegisterPage />} />
               <Route exact path="/login" render={() => <SignInPage />} />
-              <Route exact path="/user" render={() => <User />} />
+
+              <Route exact path="/bookingPage/:movieId" component={BookingPage} />
             </Switch>
           </div>
         </div>

@@ -33,7 +33,11 @@ class AuthService {
     }
 
     getCurrentUser() {
-        return JSON.parse(localStorage.getItem("user"));
+        return ({
+            username: 'jimmywang',
+            password: 'n125386594'
+        })
+        // return JSON.parse(localStorage.getItem("user"));
     }
 }
 
