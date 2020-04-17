@@ -16,10 +16,10 @@ class MoviePage extends Component {
             moviesList: MovieService.getAllMovies(),
             movieDate: "Today"
         }
-        this.handleSelectTime = this.handleSelectTime.bind(this);
+        this.handleSelectDate = this.handleSelectDate.bind(this);
     }
 
-    handleSelectTime(e) {
+    handleSelectDate(e) {
         this.setState({
             movieDate: e.target.value
         });
@@ -32,7 +32,7 @@ class MoviePage extends Component {
             <div>
                 <div>
                     <label>choose the time:
-                        <select value={this.state.movieDate} onChange={this.handleSelectTime}>
+                        <select value={this.state.movieDate} onChange={this.handleSelectDate}>
                             <option value="Today">Today</option>
                             <option value="Apr 20">Apr 20</option>
                             <option value="Apr 21">Apr 21</option>

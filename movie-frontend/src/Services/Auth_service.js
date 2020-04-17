@@ -6,18 +6,27 @@ class AuthService {
     // not sure about the token of response data
     // just temporarily named it as 'accessToken'
     login(username, password) {
-        return axios
-            .post(API_URL + "authenticate", {
-                username,
-                password
-            })
-            .then(response => {
-                if (response.data.accessToken) {
-                    localStorage.setItem("user", JSON.stringify(response.data));
-                }
+        // return axios
+        //     .post(API_URL + "authenticate", {
+        //         username,
+        //         password
+        //     })
+        //     .then(response => {
+        //         if (response.data.accessToken) {
+        //             localStorage.setItem("user", JSON.stringify(response.data));
+        //         }
 
-                return response.data;
-            });
+        //         return response.data;
+        //     });
+
+        var u = {
+            username: 'jimmywang',
+            password: 'n125386594',
+            accessToken: 'asdfasdfasdfasdfasdfasdfasdfsd'
+        }
+        
+
+        localStorage.setItem("user", JSON.stringify(u));
     }
 
 
@@ -33,11 +42,7 @@ class AuthService {
     }
 
     getCurrentUser() {
-        return ({
-            username: 'jimmywang',
-            password: 'n125386594'
-        })
-        // return JSON.parse(localStorage.getItem("user"));
+        return JSON.parse(localStorage.getItem("user"));
     }
 }
 
