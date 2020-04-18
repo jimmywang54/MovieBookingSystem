@@ -7,20 +7,20 @@ class TheaterPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            theaterId: props.match.params.theaterId,
+            theatreId: props.match.params.theatreId,
             theaters: props.theaters
         }
     }
 
     render() {
-        // console.log(this.state.theaters)
-        // console.log("Theater Id: " + this.state.theaterId)
+        console.log(this.state.theaters)
+        console.log("Theater Id: " + this.state.theatreId)
         return (
             <div>
                 {
-                    this.state.theaters.filter(theater => theater.id === parseInt(this.state.theaterId))
+                    this.state.theaters.filter(theater => theater.theatreId === parseInt(this.state.theatreId))
                         .map(tt => (
-                            <div key={tt.id}>
+                            <div key={tt.theatreId}>
                             <div>{tt.name}</div>
                             {
                                 <Link to={{

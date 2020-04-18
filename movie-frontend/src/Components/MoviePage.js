@@ -1,19 +1,19 @@
 
 import React, { Component } from 'react';
 import '../App.css';
-// import { Container, Row } from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
 
 import MovieService from '../Services/Movie_service';
 
-// import Movie from './Movie';
+import Movie from './Movie';
 
 class MoviePage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            // theater: props.location.state.theater,
-            moviesList: MovieService.getAllMovies(),
+            theater: props.location.state.theater,
+            moviesList: MovieService.getMovieByTheatreId(props.location.state.theater.theatreId),
             movieDate: undefined
         }
 
@@ -29,39 +29,38 @@ class MoviePage extends Component {
 
     render() {
         // const { moviesList, theater, movieDate } = this.state;
-        const {moviesList} = this.state;
+        const { moviesList, theater, movieDate} = this.state;
         console.log(moviesList)
         return (
             <div>
-                {/* <div>
+                <div>
                     <h1>{theater.name}</h1>
                 </div>
                 <div className="my-movie">
-                    <label>choose the time:
+                    {/* <label>choose the time:
                         <select value={this.state.movieDate} onChange={this.handleSelectDate}>
                             <option value="">Select Time</option>
                             <option value="Apr 20">Apr 20</option>
                             <option value="Apr 21">Apr 21</option>
                             <option value="Apr 22">Apr 22</option>
                         </select>
-                    </label>
+                    </label> */}
                     <Container>
                         <Row >
                             {
-                                moviesList.filter(movie => movie.theatreId === theater.id && (movie.filmDate === movieDate))
-                                    .map(filteredMovie => (
-                                        <div className="movieCard" key={filteredMovie.id}>
+                                // moviesList.filter(movie => (movie.filmDate === movieDate))
+                                moviesList.map(movie => (
+                                    <div className="movieCard" key={movie.filmId}>
                                             <Movie
-                                                movie={filteredMovie}
+                                                movie={movie}
                                                 theater={theater}
-                                                filmDate={movieDate}
                                             />
                                         </div>
                                     ))
                             }
                         </Row>
                     </Container>
-                </div> */}
+                </div>
 
             </div>
         )

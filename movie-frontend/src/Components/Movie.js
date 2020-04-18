@@ -11,7 +11,6 @@ class Movie extends Component {
         this.state = {
             movie: props.movie,
             theater: props.theater,
-            filmDate: props.filmDate,
             movieDetails: undefined
         }
     }
@@ -28,19 +27,18 @@ class Movie extends Component {
         return (
             <div>
             <Card style={{ width: '18rem' }}>
-                <Card.Img variant="top" src={"images/" + movie.imageName} alt="movie-photo" />
+                {/* <Card.Img variant="top" src={"images/" + movie.imageName} alt="movie-photo" /> */}
                 <Card.Body>
-                    <Card.Title>{movie.filmName}</Card.Title>
+                    <Card.Title>{movie.name}</Card.Title>
                 </Card.Body>
-                    {/* <Link to={'/bookingPage/' + movie.id}>
-                        <Button variant="primary" >Book</Button>{' '}
-                    </Link> */}
+                    {movie.description}<br /><br />
+                    {movie.genre}<br /><br />
+                    {movie.cast}<br /><br />
                     <Link to={{
                         pathname: '/bookingPage',
                         state: {
                             movie: movie,
-                            theater: theater,
-                            filmDate: filmDate
+                            theater: theater
                         }
                     }}><Button>Book</Button></Link>
             </Card>

@@ -47,7 +47,7 @@ class App extends Component {
   render() {
 
     const { currentUser, theaters } = this.state;
-    // console.log(theaters)
+    console.log(theaters)
     return (
       <Router>
         <div>
@@ -61,17 +61,17 @@ class App extends Component {
                   <Button >Home</Button>
                 </Link>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <Link to={"/movies"} className="nav-link">
                   <Button >Movies</Button>
                 </Link>
-              </li>
+              </li> */}
               <li className="nav-item">
                 <DropdownButton className="nav-button" title="Our Theater">
                   {
                     theaters.map(theater => (
                       <div key={theater.name}>
-                        <Dropdown.Item href={"/theaters/" + theater.id}>
+                        <Dropdown.Item href={"/theaters/" + theater.theatreId}>
                             {theater.name}
                         </Dropdown.Item>
 
@@ -116,7 +116,7 @@ class App extends Component {
             <Switch>
               <Route exact path={["/", "/main"]} render={() => <MainPage />} />
               <Route exact path="/movies" render={(props) => <MoviePage {... props}/>} />
-              <Route exact path="/theaters/:theaterId" render={(props) => <TheaterPage {... props} theaters={this.state.theaters} />} />
+              <Route exact path="/theaters/:theatreId" render={(props) => <TheaterPage {... props} theaters={this.state.theaters} />} />
               <Route exact path="/profile" component={Profile} />
               <Route exact path="/register" render={() => <RegisterPage />} />
               <Route exact path="/login" render={(props) => <SignInPage {... props}/>} />
