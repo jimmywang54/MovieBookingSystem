@@ -13,11 +13,22 @@ class MoviePage extends Component {
         super(props);
         this.state = {
             theater: props.location.state.theater,
-            moviesList: MovieService.getMovieByTheatreId(props.location.state.theater.theatreId),
+            moviesList: undefined,
             movieDate: undefined
         }
 
         this.handleSelectDate = this.handleSelectDate.bind(this);
+    }
+
+    componentDidMount() {
+        console.log(this.state.theater.theatreId)
+        MovieService.getMovieByTheatreId(this.state.theater.theatreId)
+        // MovieService.getAllMovies()
+            .then(res => {
+                this.setState({
+                    moviesList: res
+                })
+            })
     }
 
     handleSelectDate(e) {
@@ -48,7 +59,8 @@ class MoviePage extends Component {
                     <Container>
                         <Row >
                             {
-                                // moviesList.filter(movie => (movie.filmDate === movieDate))
+                                moviesList &&
+                                // moviesList.filter(movie => (movie.theatreId === this.state.theater.theatreId))
                                 moviesList.map(movie => (
                                     <div className="movieCard" key={movie.filmId}>
                                             <Movie

@@ -8,251 +8,168 @@ const API_URL = 'http://localhost:8080/';
 class MovieService {
 
 
-    /* /movies GET: Get list of all the movies stored in the db */
-    getAllMovies() {
-        console.log(authHeader());
-        
-        // axios({
-        //     method: 'get',
-        //     url: `http://localhost:8080/movies`,
-        //     headers: { Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmM4NzU1OTg3QGdtYWlsLmNvbSIsImV4cCI6MTU4NzE5ODk5MiwiaWF0IjoxNTg3MTgwOTkyfQ.cyYTWaDATVWyK9CN5XoH477xkZdRc4V_8Bxf6uZ8Ffm48JLdMMPUlyqqkgMc-IiG4b5YFRVYK1Yy-RH0VokyuA'},
-        //     withCredentials: true
-        // }).then(res => {
-        //     console.log(res);
-        // })
+    /* /theatres GET: Get list of all theatres stored in db */
+    async getTheaters() {
 
-        // return axios.get(API_URL + 'movies', {}, {
-        //    headers: {'Authorization': 'Bearer ' + authHeader()}
-        // })
-        //     .then(res => {
-        //         console.log(res);
-        //     })
-        //     .catch(err => {
-        //         console.log(err);
-        //     })
-
-        // return ([
-        //     { id: 1, name: "A Star is Born", imageName: "star.png", pricePerTicket: 10.5, filmDate: "Apr 20", theatreId: 1},
-        //     { id: 2, name: "God Father 1", imageName: "godfather.jpg", pricePerTicket: 11.5, filmDate: "Apr 21", theatreId: 1 },
-        //     { id: 3, name: "Up", imageName: "up.jpg", pricePerTicket: 9.5, filmDate: "Apr 22", theatreId: 2 }
-        // ]);
-
-        return ([
-            {
-                "filmId": 1,
-                "name": "The Forever Purge",
-                "description": "The fifth and final installment of 'The Purge' film series.",
-                "genre": "Horror",
-                "cast": [
-                    "Leven Rambin",
-                    "Ana de la Reguera"
-                ]
-            },
-            {
-                "filmId": 2,
-                "name": "Tenet",
-                "description": "An action epic revolving around international espionage, time travel, and evolution. Possibly about a man trying to prevent World War 3 through time travel and rebirth.",
-                "genre": "Thriller",
-                "cast": [
-                    "Robert Pattinson",
-                    "Elizabeth Debicki"
-                ]
-            },
-            {
-                "filmId": 3,
-                "name": "Mulan",
-                "description": "A young Chinese maiden disguises herself as a male warrior in order to save her father",
-                "genre": "Action",
-                "cast": [
-                    "Yifei Liu",
-                    "Donnie Yen"
-                ]
-            },
-            {
-                "filmId": 4,
-                "name": "Wonder Woman 1984",
-                "description": "A sequel to the 2017 superhero film 'Wonder Woman.",
-                "genre": "Fantasy",
-                "cast": [
-                    "Chris Pine",
-                    "Gal Gadot"
-                ]
-            },
-            {
-                "filmId": 5,
-                "name": "A Quiet Place Part II",
-                "description": "Following the events at home, the Abbott family now face the terrors of the outside world. Forced to venture into the unknown, they realize the creatures that hunt by sound are not the only threats lurking beyond the sand path",
-                "genre": "Sci-Fi",
-                "cast": [
-                    "Emily Blunt",
-                    "Cillian Murphy"
-                ]
-            },
-            {
-                "filmId": 6,
-                "name": "Godzilla vs. Kong",
-                "description": "As the gigantic Kong meets the unstoppable Godzilla, the world watches to see which one of them will become King of the Monsters.",
-                "genre": "Thriller",
-                "cast": [
-                    "Alexander Skarsgård",
-                    "Millie Bobby Brown"
-                ]
-            },
-            {
-                "filmId": 7,
-                "name": "The King's Man",
-                "description": "As a collection of history's worst tyrants and criminal masterminds gather to plot a war to wipe out millions, one man must race against time to stop them.",
-                "genre": "Adventure",
-                "cast": [
-                    "Harris Dickinson",
-                    "Ralph Fiennes"
-                ]
-            },
-            {
-                "filmId": 8,
-                "name": "The SpongeBob Movie: Sponge on the Run",
-                "description": "After SpongeBob's beloved pet snail Gary is snail-napped, he and Patrick embark on an epic adventure to The Lost City of Atlantic City to bring Gary home.",
-                "genre": "Animation",
-                "cast": [
-                    "Keanu Reeves",
-                    "Awkwafina"
-                ]
-            },
-            {
-                "filmId": 9,
-                "name": "No Time to Die",
-                "description": "James Bond has left active service. His peace is short-lived when Felix Leiter, an old friend from the CIA, turns up asking for help, leading Bond onto the trail of a mysterious villain armed with dangerous new technology.",
-                "genre": "Action",
-                "cast": [
-                    "Ana de Armas",
-                    "Daniel Craig"
-                ]
-            }
-        ])
+        return axios.get(API_URL + 'theatres')
+            .then(res => {
+                console.log(res.data);
+                return res.data;
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
-    getMovieByTheatreId(theatreId) {
-        // return axios.get(API_URL + 'moviesFromTheatre' {theatreId});
 
-        return ([
-            {
-                "filmId": 1,
-                "name": "The Forever Purge",
-                "description": "The fifth and final installment of 'The Purge' film series.",
-                "genre": "Horror",
-                "cast": [
-                    "Leven Rambin",
-                    "Ana de la Reguera"
-                ]
-            },
-            {
-                "filmId": 2,
-                "name": "Tenet",
-                "description": "An action epic revolving around international espionage, time travel, and evolution. Possibly about a man trying to prevent World War 3 through time travel and rebirth.",
-                "genre": "Thriller",
-                "cast": [
-                    "Robert Pattinson",
-                    "Elizabeth Debicki"
-                ]
-            },
-            {
-                "filmId": 3,
-                "name": "Mulan",
-                "description": "A young Chinese maiden disguises herself as a male warrior in order to save her father",
-                "genre": "Action",
-                "cast": [
-                    "Yifei Liu",
-                    "Donnie Yen"
-                ]
-            },
-            {
-                "filmId": 4,
-                "name": "Wonder Woman 1984",
-                "description": "A sequel to the 2017 superhero film 'Wonder Woman.",
-                "genre": "Fantasy",
-                "cast": [
-                    "Chris Pine",
-                    "Gal Gadot"
-                ]
-            },
-            {
-                "filmId": 5,
-                "name": "A Quiet Place Part II",
-                "description": "Following the events at home, the Abbott family now face the terrors of the outside world. Forced to venture into the unknown, they realize the creatures that hunt by sound are not the only threats lurking beyond the sand path",
-                "genre": "Sci-Fi",
-                "cast": [
-                    "Emily Blunt",
-                    "Cillian Murphy"
-                ]
-            },
-            {
-                "filmId": 6,
-                "name": "Godzilla vs. Kong",
-                "description": "As the gigantic Kong meets the unstoppable Godzilla, the world watches to see which one of them will become King of the Monsters.",
-                "genre": "Thriller",
-                "cast": [
-                    "Alexander Skarsgård",
-                    "Millie Bobby Brown"
-                ]
-            },
-            {
-                "filmId": 7,
-                "name": "The King's Man",
-                "description": "As a collection of history's worst tyrants and criminal masterminds gather to plot a war to wipe out millions, one man must race against time to stop them.",
-                "genre": "Adventure",
-                "cast": [
-                    "Harris Dickinson",
-                    "Ralph Fiennes"
-                ]
-            },
-            {
-                "filmId": 8,
-                "name": "The SpongeBob Movie: Sponge on the Run",
-                "description": "After SpongeBob's beloved pet snail Gary is snail-napped, he and Patrick embark on an epic adventure to The Lost City of Atlantic City to bring Gary home.",
-                "genre": "Animation",
-                "cast": [
-                    "Keanu Reeves",
-                    "Awkwafina"
-                ]
-            },
-            {
-                "filmId": 9,
-                "name": "No Time to Die",
-                "description": "James Bond has left active service. His peace is short-lived when Felix Leiter, an old friend from the CIA, turns up asking for help, leading Bond onto the trail of a mysterious villain armed with dangerous new technology.",
-                "genre": "Action",
-                "cast": [
-                    "Ana de Armas",
-                    "Daniel Craig"
-                ]
-            },
-            {
-                "filmId": 1,
-                "name": "The Forever Purge",
-                "description": "The fifth and final installment of 'The Purge' film series.",
-                "genre": "Horror",
-                "cast": [
-                    "Leven Rambin",
-                    "Ana de la Reguera"
-                ]
-            },
-            {
-                "filmId": 5,
-                "name": "A Quiet Place Part II",
-                "description": "Following the events at home, the Abbott family now face the terrors of the outside world. Forced to venture into the unknown, they realize the creatures that hunt by sound are not the only threats lurking beyond the sand path",
-                "genre": "Sci-Fi",
-                "cast": [
-                    "Emily Blunt",
-                    "Cillian Murphy"
-                ]
-            }
-        ])
+    /* /movies GET: Get list of all the movies stored in the db */
+    getAllMovies() {
+        // console.log(authHeader());
+
+        return axios.get(API_URL + 'movies')
+            .then(res => {
+                console.log(res);
+                return res.data;
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+    }
+
+    async getMovieByTheatreId(thId) {
+        console.log(thId);
+        console.log(authHeader())
+
+        return axios.get(API_URL + 'moviesFromTheatre/', {theatreId: thId},
+            { headers: { 'Authorization': 'Bearer ' + authHeader() } })
+            .then(res => {
+            console.log(res.data);
+            return res.data;
+        })
+        .catch(err => {
+            console.log(err.message);
+        })
+
+        // return ([
+        //     {
+        //         "filmId": 1,
+        //         "name": "The Forever Purge",
+        //         "description": "The fifth and final installment of 'The Purge' film series.",
+        //         "genre": "Horror",
+        //         "cast": [
+        //             "Leven Rambin",
+        //             "Ana de la Reguera"
+        //         ]
+        //     },
+        //     {
+        //         "filmId": 2,
+        //         "name": "Tenet",
+        //         "description": "An action epic revolving around international espionage, time travel, and evolution. Possibly about a man trying to prevent World War 3 through time travel and rebirth.",
+        //         "genre": "Thriller",
+        //         "cast": [
+        //             "Robert Pattinson",
+        //             "Elizabeth Debicki"
+        //         ]
+        //     },
+        //     {
+        //         "filmId": 3,
+        //         "name": "Mulan",
+        //         "description": "A young Chinese maiden disguises herself as a male warrior in order to save her father",
+        //         "genre": "Action",
+        //         "cast": [
+        //             "Yifei Liu",
+        //             "Donnie Yen"
+        //         ]
+        //     },
+        //     {
+        //         "filmId": 4,
+        //         "name": "Wonder Woman 1984",
+        //         "description": "A sequel to the 2017 superhero film 'Wonder Woman.",
+        //         "genre": "Fantasy",
+        //         "cast": [
+        //             "Chris Pine",
+        //             "Gal Gadot"
+        //         ]
+        //     },
+        //     {
+        //         "filmId": 5,
+        //         "name": "A Quiet Place Part II",
+        //         "description": "Following the events at home, the Abbott family now face the terrors of the outside world. Forced to venture into the unknown, they realize the creatures that hunt by sound are not the only threats lurking beyond the sand path",
+        //         "genre": "Sci-Fi",
+        //         "cast": [
+        //             "Emily Blunt",
+        //             "Cillian Murphy"
+        //         ]
+        //     },
+        //     {
+        //         "filmId": 6,
+        //         "name": "Godzilla vs. Kong",
+        //         "description": "As the gigantic Kong meets the unstoppable Godzilla, the world watches to see which one of them will become King of the Monsters.",
+        //         "genre": "Thriller",
+        //         "cast": [
+        //             "Alexander Skarsgård",
+        //             "Millie Bobby Brown"
+        //         ]
+        //     },
+        //     {
+        //         "filmId": 7,
+        //         "name": "The King's Man",
+        //         "description": "As a collection of history's worst tyrants and criminal masterminds gather to plot a war to wipe out millions, one man must race against time to stop them.",
+        //         "genre": "Adventure",
+        //         "cast": [
+        //             "Harris Dickinson",
+        //             "Ralph Fiennes"
+        //         ]
+        //     },
+        //     {
+        //         "filmId": 8,
+        //         "name": "The SpongeBob Movie: Sponge on the Run",
+        //         "description": "After SpongeBob's beloved pet snail Gary is snail-napped, he and Patrick embark on an epic adventure to The Lost City of Atlantic City to bring Gary home.",
+        //         "genre": "Animation",
+        //         "cast": [
+        //             "Keanu Reeves",
+        //             "Awkwafina"
+        //         ]
+        //     },
+        //     {
+        //         "filmId": 9,
+        //         "name": "No Time to Die",
+        //         "description": "James Bond has left active service. His peace is short-lived when Felix Leiter, an old friend from the CIA, turns up asking for help, leading Bond onto the trail of a mysterious villain armed with dangerous new technology.",
+        //         "genre": "Action",
+        //         "cast": [
+        //             "Ana de Armas",
+        //             "Daniel Craig"
+        //         ]
+        //     },
+        //     {
+        //         "filmId": 1,
+        //         "name": "The Forever Purge",
+        //         "description": "The fifth and final installment of 'The Purge' film series.",
+        //         "genre": "Horror",
+        //         "cast": [
+        //             "Leven Rambin",
+        //             "Ana de la Reguera"
+        //         ]
+        //     },
+        //     {
+        //         "filmId": 5,
+        //         "name": "A Quiet Place Part II",
+        //         "description": "Following the events at home, the Abbott family now face the terrors of the outside world. Forced to venture into the unknown, they realize the creatures that hunt by sound are not the only threats lurking beyond the sand path",
+        //         "genre": "Sci-Fi",
+        //         "cast": [
+        //             "Emily Blunt",
+        //             "Cillian Murphy"
+        //         ]
+        //     }
+        // ])
     }
 
         
     
 
     /* /showDetailsFromMovie GET: Get which theatres and timings of a particular movie. Pass movieId as input */
-    getMovieDetails(movieId) {
+    async getMovieDetails(movieId) {
         // return axios.get(API_URL + 'showDetailsFromMovie', { movieId });
 
     //     var movies = [{ id: 1, name: "A Star is Born", imageName: "star.png", pricePerTicket: 10.5, filmDate: "Apr 20", filmTiming: "10:00", theatreName: "AMC", filmSessionId: 121},
@@ -331,7 +248,7 @@ class MovieService {
     }
 
     /* /getMovieLayout GET: Get available(unbooked) seats of a particular show by passing the above show details as input */
-    getMovieLayout(movieDetail) {
+    async getMovieLayout(movieDetail) {
         // return axios.get(API_URL + 'getMovieLayout', { movieDetail });
         // return ["A1", "B2", "C1"]
 
@@ -589,55 +506,7 @@ class MovieService {
         ])
     }
 
-    /* /theatres GET: Get list of all theatres stored in db */
-    getTheaters() {
-        
-        // return axios.get(API_URL + 'theatres', { 'headers': { Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmM4NzU1OTg3QGdtYWlsLmNvbSIsImV4cCI6MTU4NzI0MDczNCwiaWF0IjoxNTg3MjIyNzM0fQ.0ylb3508MD8TIzJLyG5gTaYSvhF2Ndqjut30OxJjSLufljSG9eKY_sNT4zR5Wkda0hnf45nGrw3QIf0pi_MtxQ'}})
-        //     .then(response => {
-        //         console.log(response);
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //     })
-
-        // return ([
-        //     {id: 1, name: "AMC", address: "Alphonsus St", city: "Boston"},
-        //     {id: 2, name: "TW", address: "tia", city: "Taiwan"}
-        // ]);
-
-        return ([
-            {
-                "theatreId": 1,
-                "name": "Regal Fenway And RPX",
-                "city": "Boston",
-                "address": "201 Brookline Ave"
-            },
-            {
-                "theatreId": 2,
-                "name": "AMC Boston Common 19",
-                "city": "Boston",
-                "address": "175 Tremont St"
-            },
-            {
-                "theatreId": 3,
-                "name": "ShowPlace ICON Boston",
-                "city": "Boston",
-                "address": "60 Seaport Blvd UNIT 315"
-            },
-            {
-                "theatreId": 4,
-                "name": "AMC South Bay Center 12",
-                "city": "Dorchester",
-                "address": "25 District Ave"
-            },
-            {
-                "theatreId": 5,
-                "name": "Coolidge Corner Theatre",
-                "city": "Brookline",
-                "address": "290 Harvard St"
-            }
-        ])
-    }
+    
 
     /* /bookTickets POST: book tickets by passing seat array in input and film session id in URL.
     Here the seats will get booked and the user will get charged using credit card. Also the transaction will be returned in output */

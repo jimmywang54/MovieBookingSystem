@@ -11,6 +11,7 @@ import SignInPage from "./Components/SignInPage"
 import RegisterPage from "./Components/RegisterPage"
 import BookingPage from './Components/BookingPage';
 import Profile from './Components/Profile';
+import CreditCard from './Components/CreditCard';
 
 import AuthService from './Services/Auth_service';
 import MovieService from './Services/Movie_service';
@@ -20,10 +21,9 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       currentUser: undefined,
-      theaters: MovieService.getTheaters()
+      theaters: undefined
     }
   }
 
@@ -31,13 +31,21 @@ class App extends Component {
   componentDidMount() {
     const user = AuthService.getCurrentUser();
 
+    MovieService.getTheaters()
+      .then(res => {
+        this.setState({
+          theaters: res
+        })
+      });
+
     if (user) {
       this.setState({
-        currentUser: AuthService.getCurrentUser(),
+        currentUser: AuthService.getCurrentUser()
       })
     }
 
   }
+
 
   logOut() {
     AuthService.logout();
@@ -46,8 +54,7 @@ class App extends Component {
 
   render() {
 
-    const { currentUser, theaters } = this.state;
-    console.log(theaters)
+    console.log(this.state.theaters)
     return (
       <Router>
         <div>
@@ -68,8 +75,8 @@ class App extends Component {
               </li> */}
               <li className="nav-item">
                 <DropdownButton className="nav-button" title="Our Theater">
-                  {
-                    theaters.map(theater => (
+                  {this.state.theaters &&
+                    this.state.theaters.map(theater => (
                       <div key={theater.name}>
                         <Dropdown.Item href={"/theaters/" + theater.theatreId}>
                             {theater.name}
@@ -82,7 +89,7 @@ class App extends Component {
               </li>
             </div>
 
-            {currentUser ? (
+            {this.state.currentUser ? (
               <div className="navbar-nav">
                 <li className="nav-item">
                   <Link to={"/profile"} className="nav-link">
@@ -116,8 +123,9 @@ class App extends Component {
             <Switch>
               <Route exact path={["/", "/main"]} render={() => <MainPage />} />
               <Route exact path="/movies" render={(props) => <MoviePage {... props}/>} />
-              <Route exact path="/theaters/:theatreId" render={(props) => <TheaterPage {... props} theaters={this.state.theaters} />} />
+              <Route exact path="/theaters/:theatreId" render={(props) => <TheaterPage {... props} />} />
               <Route exact path="/profile" component={Profile} />
+              <Route exact path="/creditcard" component={CreditCard}/>
               <Route exact path="/register" render={() => <RegisterPage />} />
               <Route exact path="/login" render={(props) => <SignInPage {... props}/>} />
               <Route exact path="/bookingPage" component={BookingPage} />

@@ -7,11 +7,28 @@ const API_URL = 'http://localhost:8080/';
 class UserService {
     
     getProfile() {
-        return axios.get(API_URL + 'profile', {headers: authHeader()});
+        return axios.get(API_URL + 'profile', {headers: {'Authorization': 'Bearer ' + authHeader()}});
+    }
+
+    saveProfile(fname, lname) {
+        return axios.post(API_URL + 'profile', {
+            firstName: fname,
+            lastName: lname
+        }, { headers: { 'Authorization': 'Bearer ' + authHeader()}});
+            
     }
     
-    addPayment(creditCardDetail) {
-        return axios.post(API_URL + 'addPayment', {creditCardDetail});
+    addPayment(cardNumber, eMonth, eYear, c) {
+        var info = {
+            creditCardNumber: cardNumber,
+            expiryMonth: eMonth,
+            expiryYear: eYear,
+            cvc: c
+        }
+        
+        return axios.post(API_URL + 'addPayment', info, {
+            headers: { 'Authorization': 'Bearer ' + authHeader() }
+        });
     }
 
     getHistory() {

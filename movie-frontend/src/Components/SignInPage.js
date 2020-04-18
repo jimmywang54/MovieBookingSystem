@@ -66,12 +66,11 @@ class SignInPage extends Component {
                         window.location.reload();
                     },
                     err => {
-                        if(err.response.status === 401) {
                             this.setState({
                                 message: "Wrong email or password",
                                 loading: false
                             })
-                        }
+                        
                     }
                 )
                 

@@ -1,6 +1,7 @@
 import axios from 'axios';
 // import authHeader from './Auth_header';
 
+// const API_URL = 'https://cors-anywhere.herokuapp.com/http://localhost:8080/';
 const API_URL = 'http://localhost:8080/';
 
 class AuthService {
@@ -14,22 +15,13 @@ class AuthService {
             },
             )
             .then(response => {
-                console.log(response)
+                console.log(response.data)
                 if (response.data) {
                     localStorage.setItem("user", JSON.stringify(response.data));
                 }
 
                 return response.data;
             });
-
-        // var u = {
-        //     username: 'jimmywang',
-        //     password: 'n125386594',
-        //     accessToken: 'asdfasdfasdfasdfasdfasdfasdfsd'
-        // }
-        
-
-        // localStorage.setItem("user", JSON.stringify(u));
     }
 
 
@@ -41,7 +33,16 @@ class AuthService {
         return axios.post(API_URL + "register", {
             username,
             password
-        });
+        }, {
+            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}
+        })
+        .then(res => {
+            console.log(res.data)
+            return res.data
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
 
     getCurrentUser() {

@@ -99,8 +99,8 @@ class RegisterPage extends Component {
                 error => {
                     console.log("In error")
                     var resMessage = "";
-                    if(error.response.status === 400)
-                        resMessage = "User already exist!"
+                    
+                    resMessage = "User already exist!"
 
                     this.setState({
                         successful: false,
