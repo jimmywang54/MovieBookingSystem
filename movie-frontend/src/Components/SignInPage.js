@@ -55,25 +55,29 @@ class SignInPage extends Component {
         this.form.validateAll();
 
         if (this.checkBtn.context._errors.length === 0) {
-            // AuthService.login(this.state.username, this.state.password)
-            //     .then(() => {
-            //         this.props.history.push("/user");
-            //         window.location.reload();
-            //     },
-            //         error => {
-            //             const resMessage =
-            //                 (error.response && error.response.data &&
-            //                     error.response.data.message) ||
-            //                 error.message || error.toString();
-
-            //             this.setState({
-            //                 loading: false,
-            //                 message: resMessage
-            //             });
-            //         });
-            AuthService.login(this.state.username, this.state.password);
-            this.props.history.push("/");
-            window.location.reload();
+            AuthService.login(this.state.username, this.state.password)
+                .then(
+                    res => {
+                        this.setState({
+                            message: "Successful Sign in",
+                            loading: false
+                        });
+                        this.props.history.push("/");
+                        window.location.reload();
+                    },
+                    err => {
+                        if(err.response.status === 401) {
+                            this.setState({
+                                message: "Wrong email or password",
+                                loading: false
+                            })
+                        }
+                    }
+                )
+                
+            // AuthService.login(this.state.username, this.state.password);
+            // this.props.history.push("/");
+            // window.location.reload();
         } else {
             this.setState({
                 loading: false
@@ -83,6 +87,7 @@ class SignInPage extends Component {
     
 
     render() {
+        console.log(this.state.message);
         return (
             <div className="col-md-12">
                 <div className="card card-container">

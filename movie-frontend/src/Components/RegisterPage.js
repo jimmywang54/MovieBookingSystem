@@ -5,6 +5,7 @@ import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 
 import AuthService from '../Services/Auth_service';
+import { Link } from "react-router-dom";
 
 const required = value => {
     if (!value) {
@@ -48,6 +49,7 @@ const vpassword = value => {
 
 class RegisterPage extends Component {
     constructor(props) {
+        console.log("In constructer")
         super(props);
         this.handleRegister = this.handleRegister.bind(this);
         this.onChangeUsername = this.onChangeUsername.bind(this);
@@ -90,17 +92,15 @@ class RegisterPage extends Component {
             ).then(
                 response => {
                     this.setState({
-                        message: response.data.message,
+                        message: "Successful Registered",
                         successful: true
                     });
                 },
                 error => {
-                    const resMessage =
-                        (error.response &&
-                            error.response.data &&
-                            error.response.data.message) ||
-                        error.message ||
-                        error.toString();
+                    console.log("In error")
+                    var resMessage = "";
+                    if(error.response.status === 400)
+                        resMessage = "User already exist!"
 
                     this.setState({
                         successful: false,
@@ -112,6 +112,7 @@ class RegisterPage extends Component {
     }
 
     render() {
+        console.log(this.state.successful)
         return (
             <div className="col-md-12">
                 <div className="card card-container">
@@ -161,8 +162,7 @@ class RegisterPage extends Component {
 
                         {this.state.message && (
                             <div className="form-group">
-                                <div
-                                    className={
+                                <div className={
                                         this.state.successful
                                             ? "alert alert-success"
                                             : "alert alert-danger"
@@ -170,7 +170,9 @@ class RegisterPage extends Component {
                                     role="alert"
                                 >
                                     {this.state.message}
+                                    {console.log(this.state.message)}
                                 </div>
+                                {this.state.successful ? <Link to='/'>Back To Main Page</Link> : <div></div>}
                             </div>
                         )}
                         <CheckButton
@@ -180,6 +182,7 @@ class RegisterPage extends Component {
                             }}
                         />
                     </Form>
+                   
                 </div>
             </div>
         );

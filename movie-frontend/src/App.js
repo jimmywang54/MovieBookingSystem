@@ -33,7 +33,7 @@ class App extends Component {
 
     if (user) {
       this.setState({
-        currentUser: AuthService.getCurrentUser()
+        currentUser: AuthService.getCurrentUser(),
       })
     }
 
@@ -47,7 +47,7 @@ class App extends Component {
   render() {
 
     const { currentUser, theaters } = this.state;
-    console.log(currentUser)
+    // console.log(theaters)
     return (
       <Router>
         <div>
@@ -86,7 +86,7 @@ class App extends Component {
               <div className="navbar-nav">
                 <li className="nav-item">
                   <Link to={"/profile"} className="nav-link">
-                    <Button>{currentUser.username}</Button>
+                    <Button>Profile</Button>
                   </Link>
                 </li>
                 <li className="nav-item">
@@ -115,13 +115,13 @@ class App extends Component {
           <div className="container-routes">
             <Switch>
               <Route exact path={["/", "/main"]} render={() => <MainPage />} />
-              <Route exact path="/movies" render={() => <MoviePage />} />
+              <Route exact path="/movies" render={(props) => <MoviePage {... props}/>} />
               <Route exact path="/theaters/:theaterId" render={(props) => <TheaterPage {... props} theaters={this.state.theaters} />} />
               <Route exact path="/profile" component={Profile} />
               <Route exact path="/register" render={() => <RegisterPage />} />
               <Route exact path="/login" render={(props) => <SignInPage {... props}/>} />
-              <Route exact path="/bookingPage/:movieId" component={BookingPage} />
-              <Route exact path="/paymentPage/:movieId" component={PaymentPage} />
+              <Route exact path="/bookingPage" component={BookingPage} />
+              <Route exact path="/paymentPage" component={PaymentPage} />
             </Switch>
           </div>
         </div>
@@ -132,11 +132,3 @@ class App extends Component {
 
 
 export default App;
-
-
-// To pass prop to component use render
-// It's ok to use component, but the children component will remount each time we call route dom
-// <Route
-//   path='/dashboard'
-//   render={(props) => <Dashboard {...props} isAuthed={true} />}
-// />
