@@ -63,6 +63,7 @@ class SignInPage extends Component {
                             loading: false
                         });
                         this.props.history.push("/");
+                        alert("Succesfully Sign In!")
                         window.location.reload();
                     },
                     err => {

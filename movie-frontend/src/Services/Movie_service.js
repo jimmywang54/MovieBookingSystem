@@ -74,7 +74,11 @@ class MovieService {
 
     /* /getMovieLayout GET: Get available(unbooked) seats of a particular show by passing the above show details as input */
     async getMovieLayout(filmSessionId) {
-        return axios.get(API_URL + 'getMovieLayout/' + filmSessionId, { headers: { 'Authorization': 'Bearer ' + authHeader() } });
+        return axios.get(API_URL + 'getMovieLayout/' + filmSessionId, { headers: { 'Authorization': 'Bearer ' + authHeader() } })
+            .then(res => {
+                return res.data
+            })
+            .catch(err => console.log(err))
             
     }
 
@@ -83,7 +87,8 @@ class MovieService {
     /* /bookTickets POST: book tickets by passing seat array in input and film session id in URL.
     Here the seats will get booked and the user will get charged using credit card. Also the transaction will be returned in output */
     bookTickets(ticket) {
-        return axios.post(API_URL + 'bookTickets/1', {ticket}, {
+        console.log(ticket)
+        return axios.post(API_URL + 'bookTickets/1', ticket, {
             headers: {
                 'Authorization': 'Bearer ' + authHeader(),
                 'Accept': 'application/json',
@@ -93,8 +98,7 @@ class MovieService {
         .then(res => {
             console.log(res.data);
             return res.data;
-        })
-        .catch(err => console.log(err.message));
+        });
     }
 }
 

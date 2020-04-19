@@ -54,7 +54,7 @@ class App extends Component {
 
   render() {
 
-    // console.log(this.state.currentUser)
+    console.log(this.state.currentUser)
     return (
       <Router>
         <div>
@@ -89,31 +89,31 @@ class App extends Component {
               </li>
             </div>
 
-            {this.state.currentUser ? (
+            {!this.state.currentUser ? (
               <div className="navbar-nav">
                 <li className="nav-item">
-                  <Link to={"/profile"} className="nav-link">
-                    <Button>Profile</Button>
+                  <Link to={"/login"} className="nav-link">
+                    <Button >Login</Button>
                   </Link>
                 </li>
+
                 <li className="nav-item">
-                  <a href='/login' className="nav-link" onClick={this.logOut}>
-                    <Button >Log Out</Button>
-                  </a>
+                  <Link to={"/register"} className="nav-link">
+                    <Button >Sign Up</Button>
+                  </Link>
                 </li>
               </div>
             ) : (
                 <div className="navbar-nav">
                   <li className="nav-item">
-                    <Link to={"/login"} className="nav-link">
-                      <Button >Login</Button>
+                    <Link to={"/profile"} className="nav-link">
+                      <Button>Profile</Button>
                     </Link>
                   </li>
-
                   <li className="nav-item">
-                    <Link to={"/register"} className="nav-link">
-                      <Button >Sign Up</Button>
-                    </Link>
+                    <a href='/login' className="nav-link" onClick={this.logOut}>
+                      <Button >Log Out</Button>
+                    </a>
                   </li>
                 </div>
               )}
@@ -124,10 +124,10 @@ class App extends Component {
               <Route exact path={["/", "/main"]} render={() => <MainPage />} />
               <Route exact path="/movies" render={(props) => <MoviePage {... props}/>} />
               <Route exact path="/theaters/:theatreId" render={(props) => <TheaterPage {... props} />} />
+              <Route exact path="/register" render={() => <RegisterPage />} />
+              <Route exact path="/login" render={(props) => <SignInPage {...props} />} />
               <Route exact path="/profile" component={Profile} />
               <Route exact path="/creditcard" component={CreditCard}/>
-              <Route exact path="/register" render={() => <RegisterPage />} />
-              <Route exact path="/login" render={(props) => <SignInPage {... props}/>} />
               <Route exact path="/bookingPage" component={BookingPage} />
               <Route exact path="/paymentPage" component={PaymentPage} />
             </Switch>

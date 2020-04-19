@@ -13,187 +13,277 @@ class BookingPage extends Component {
             currentUser: AuthService.getCurrentUser(),
             movie: props.location.state.movie,
             theater: props.location.state.theater,
+
+            rawMovieDetail: undefined,
             movieDetail: undefined,
-            selectDate: undefined,
-            selectTime: undefined,
-            flag: true,
-            currentMovie: props.location.state.movie,
-            times: [],
+            dateDict: undefined,
+            timeDict: undefined,
+            selectDate: "",
+            selectTime: "",
+            selectHall: "",
+            currentMovie: undefined,
+            finalMovie: undefined,
             seats: [],
-            selectSeat: undefined,
-            movieDate: ["2020-04-24", "2020-04-25", "2020-04-26", "2020-04-27"]
+            selectSeats: undefined
+
         }
 
         // console.log(this.state.movie);
+        this.createMovieSet = this.createMovieSet.bind(this);
+        this.constructDateTimeObject = this.constructDateTimeObject.bind(this);
         this.handleSelectDate = this.handleSelectDate.bind(this);
         this.handleSelectTime = this.handleSelectTime.bind(this);
         this.handleSelectSeat = this.handleSelectSeat.bind(this);
+        this.filterOutMovie = this.filterOutMovie.bind(this);
+        this.handleSelectHall = this.handleSelectHall.bind(this);
+
+        // console.log(this.state.movie);
+
     }
 
-    componentDidMount() {
-        var movieForTheatre = [];
+    createMovieSet() {
+        console.log("in createMovieSet")
 
         MovieService.getMovieDetails(this.state.movie.filmId)
             .then(res => {
-                res.map(movie => {
-                    if (movie.theatreId === this.state.theater.theatreId) {
-                        movieForTheatre.push(movie);
-                    }
+                this.setState({
+                    rawMovieDetail: res
                 })
+            })
+            .then(() => {
+                var theatreFilteredMovie = this.state.rawMovieDetail.filter(movie => {
+                    return movie.theatreId === this.state.theater.theatreId
+                });
+
+                this.setState({
+                    movieDetail: theatreFilteredMovie
+                })
+            })
+            .then(() => {
+                console.log(this.state.movieDetail);
+                this.constructDateTimeObject()
             });
+    }
+
+    constructDateTimeObject() {
+        var dateMap = {}, dateDest = [];
+        var timeMap = {}, timeDest = [];
+        for (var i = 0; i < this.state.movieDetail.length; i++) {
+            var movie = this.state.movieDetail[i];
+            // construct date dict
+            if (!dateMap[movie.filmDate]) {
+                // create a new json object
+                dateDest.push({
+                    id: movie.filmDate,
+                    data: [movie]
+                });
+                dateMap[movie.filmDate] = movie;
+            }
+            else {
+                for (var j = 0; j < dateDest.length; j++) {
+                    var dj = dateDest[j];
+                    if (dj.filmDate === movie.filmDate) {
+                        dj.data.push(movie);
+                        break;
+                    }
+                }
+            }
+
+            // construct time dict
+            if (!timeMap[movie.filmTiming]) {
+                timeDest.push({
+                    id: movie.filmTiming,
+                    data: [movie]
+                });
+                timeMap[movie.filmTiming] = movie;
+            }
+            else {
+                for(var k = 0; k < timeDest.length; k++) {
+                    var djj = timeDest[k];
+                    if(djj.filmTiming === movie.filmTiming) {
+                        djj.data.push(movie);
+                        break;
+                    }
+                }
+            }
+        }
 
         this.setState({
-            movieDetail: movieForTheatre
+            dateDict: dateMap,
+            timeDict: timeMap
         })
+    }
 
-        console.log(this.state.movieDetail);
-    }       
-    
+    componentDidMount() {
+        // need to get the dates and times
+        // Get the movies details with the currently theatre
+        // console.log("In componentDidMount");
+        this.createMovieSet();
+    }
+
 
 
     handleSelectDate(e) {
-        let m = this.state.movieDetail.filter(movie => (movie.filmDate === e.target.value));
-        console.log(this.state.movieDetail)
-        console.log(m);
-        if(m.length > 0) {
+        this.setState({
+            selectDate: e.target.value
+        })
+
+        if(e.target.value === "none") {
             this.setState({
-                selectDate: e.target.value,
-                movieDetail: m,
-                isDate: true
+                selectTime: "",
+                selectHall: ""
             })
         }
-        
     }
 
     handleSelectTime(e) {
-        let m = this.state.movieDetail.filter(movie => (movie.filmTiming === e.target.value));
-
         this.setState({
-            selectTime: e.target.value,
-            movieDetail: m,
-        });
+            selectTime: e.target.value
+        })
 
-        // console.log(m);
+        var time = e.target.value
+        
+        if(this.state.selectDate !== "" && this.state.selectDate !== "none" &&
+            time !== "" && time !== "none") {
+            this.filterOutMovie(time);
+        }
 
-        MovieService.getMovieLayout(m[0].filmSessionId)
+        if(e.target.value === "none") {
+            this.setState({
+                selectHall: ""
+            })
+        }
+    }
+
+    filterOutMovie(time) {
+        // console.log("In filteroutmovie")
+        // console.log(time)
+        // console.log("date: " + this.state.selectDate);
+        // console.log("time: " + this.state.selectTime);
+        const filteredMovie = this.state.movieDetail.filter(movie => (
+            (movie.filmDate === this.state.selectDate) &&
+            (movie.filmTiming === time)
+        ));
+        
+        this.setState({
+            currentMovie: filteredMovie
+        })
+    }
+
+    handleSelectHall(e) {
+        this.setState({
+            finalMovie: this.state.currentMovie[e.target.value],
+            selectHall: e.target.value
+        })
+
+        // console.log(this.state.currentMovie[e.target.value]);
+        MovieService.getMovieLayout(this.state.currentMovie[e.target.value].filmSessionId)
             .then(res => {
                 this.setState({
-                    seats: res.data,
-                    movieDetail: m[0]
+                    seats: res
                 })
-            })
-            .catch(err => {
-                console.log(err.message);
             })
     }
 
     handleSelectSeat(e) {
-
         this.setState({
-            selectSeat: this.state.seats[e.target.value]
+            selectSeats: this.state.seats[e.target.value]
         })
     }
 
     render() {
-        const { movie, movieDetail, currentUser, seats, selectDate, selectTime, selectSeat } = this.state;
-        console.log(movieDetail)
-        console.log("Select Date: " + selectDate)
-        console.log("Select Time: " + selectTime)
-        console.log(seats)
-        console.log(selectSeat)
-        // console.log(selectDate)
-        // console.log(this.state.currentMovie.filmSessionId)
-
-        if (movieDetail && this.state.flag) {
-            movieDetail.map(m => {
-                if (this.state.times.indexOf(m.filmTiming) === -1)
-                    this.state.times.push(m.filmTiming)
-            })
-            this.state.flag = false
-        }
-
+        const { dateDict, timeDict, selectDate, selectTime, selectHall} = this.state;
+        // console.log(this.state.finalMovie);
+        // console.log("date: " + selectDate);
+        // console.log("time: " + selectTime);
+        // console.log("hall: " + selectHall);
+        // console.log(this.state.finalMovie);
+        console.log(this.state.selectSeats);
+        console.log(this.state.finalMovie)
         return (
             <div>
-                <p>The movie you want to book:</p>
-                <p>Name: {movie.name}</p>
-
-                
-                <p>Select Movie Date: </p>
-
+                <p>Select the Date:</p>
                 <select name="selectDate" onChange={this.handleSelectDate}>
-                    <option key="none" value="none">Select Movie Date</option>
+                    <option key="none" value="none">Select Date</option>
                     {
-                        this.state.movieDate.map(date => (
+                        
+                        dateDict &&
+                        Object.keys(dateDict).map(date => (
                             <option key={date} value={date}>{date}</option>
                         ))
-                    }
-                </select>
                         
+                    }
+                    
+                </select>
                 {
-                    ((!this.state.selectDate || this.state.selectDate === "none")) ? (
+                    (!selectDate || selectDate === "" || selectDate === "none") ? (
                         <div></div>
-                    ): (
-                        <div>
-                            <p>choose the time:</p>
+                    ) : (<div>                            
+                        <p>Select the Time:</p>
+                        <select name="selectTime" onChange={this.handleSelectTime}>
+                            <option key="none" value="none">Select Date</option>
+                            {
+                                timeDict &&
+                                Object.keys(timeDict).map(time => (
+                                    <option key={time} value={timeDict.time}>{time}</option>
+                                ))
 
-                            <select value={this.state.selectTime} onChange={this.handleSelectTime}>
-                                <option key="none" value="none">Select Movie Time</option>
+                            }
+
+                        </select></div>)
+                }
+
+                {
+                    (selectDate === "" || selectTime === "" || selectDate === "none" || selectTime === "none") ? (
+                        <div></div>
+                    ) : (
+                        
+                        <div>
+                            <p>Select the Hall:</p>
+                            <select name="selectHall" onChange={this.handleSelectHall}>
+                                <option key="none" value="none">Select Hall</option>
                                 {
-                                    this.state.times.map(time => (
-                                        <option key={time} value={time}>{time}</option>
-                                    ))
+                                   this.state.currentMovie.map((movie, index) => (
+                                       <option key={movie.hallId} value={index}>{movie.hallName}</option>
+                                   ))
                                 }
                             </select>
-                        </div >
-                        )
-                }
-
-
-                {
-                    (!this.state.selectTime || this.state.selectTime === "none") ? (
-                        <div></div>
-                    ) : (
-                            <div>
-                                <label>
-                                    Select a Seat:
-                                    </label><br/>
-                                <select onChange={this.handleSelectSeat}>
-
-                                    <option key="none" value="none">Select</option>
-                                    {
-                                        seats.map((seat, index) => (
-                                            <option key={seat.seatNumber} value={index}>{seat.seatNumber}</option>
-                                        ))
-                                    }
-                                </select>
-                            </div>
-                        )
-                }
-
-                {
-                    currentUser ? (
-                    <Link to={{
-                        pathname: '/paymentPage',
-                        state: {
-                            ticket: this.state.selectSeat,
-                            movie: this.state.movieDetail
-                        }
-                    }}>
-                        <Button variant="primary" >Book</Button>{' '}
-                    </Link>
-                    ) : (
-                        <Link to='/login'>
-                            <Button variant="primary" >Login to Book</Button>{' '}
-                        </Link>
+                        </div>
                     )
                 }
 
-
+                {
+                    (this.state.finalMovie && selectDate !== "none" && selectTime !== "none" && selectHall !== "") &&
+                    (
+                        <div>
+                       <select name="selectSeat" onChange={this.handleSelectSeat}>
+                           <option key="none" value="none">Select Seat</option>
+                           {
+                                this.state.seats.map((seat, index) => (
+                                    // <input type="checkbox" onChange={this.handleSelectSeat}>{seat.seatNumber}</input>
+                                    <option key={seat.seatNumber} value={index}>{seat.seatNumber}</option>
+                                ))
+                           }
+                       </select>
+                       <Link to={{
+                            pathname: '/paymentPage',
+                            state: {
+                                ticket: this.state.selectSeats,
+                                movie: this.state.finalMovie
+                            }
+                       }}
+                        >
+                           <Button>Confirm</Button>
+                       </Link>
+                       </div>
+                    )
+                }
             </div>
+        );
 
-        )
     }
 }
 
 
 export default BookingPage;
+ 

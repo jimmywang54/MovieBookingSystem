@@ -28,7 +28,11 @@ class UserService {
         
         return axios.post(API_URL + 'addPayment', info, {
             headers: { 'Authorization': 'Bearer ' + authHeader() }
-        });
+        }).then(res => {
+            console.log(res);
+            return res.data;
+        })
+        .catch(err => console.log(err));
     }
 
     getHistory() {

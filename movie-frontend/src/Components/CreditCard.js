@@ -8,6 +8,7 @@ import UserService from '../Services/User_service';
 export default class CreditCard extends Component {
     
     constructor(props) {
+        console.log("in con")
         super(props);
         this.state ={
             cardNumber: "",
@@ -58,19 +59,26 @@ export default class CreditCard extends Component {
                     successful: true,
                     isloading: false
                 })
+                console.log("In response")
+                this.props.history.push("/profile");
+                alert("Credit Successfully Added!")
+                // window.location.reload();
             })
             .catch(err => {
+                console.log("In error")
                 this.setState({
                     message: "Your card number is incorrect",
                     isloading: false
                 })
+                alert("Incorrect Credit Card Info!")
             })
     }
 
     render() {
-        console.log(this.state.cardNumber);
-        console.log(this.state.expiry);
-        console.log(this.state.cvc);
+        // console.log(this.state.cardNumber);
+        // console.log(this.state.expiry);
+        // console.log(this.state.cvc);
+        console.log(this.state.successful)
         return(
             <div>
             <h3>Add Credit Card: </h3>
@@ -81,17 +89,8 @@ export default class CreditCard extends Component {
                 cardCVCInputProps={{ value: this.state.cvc, onChange: this.handleCardCVCChange }}
                 fieldClassName="creditCardInput"
             />
-            <Button className="creditCardButton" type='submit'>Submit</Button>
+            <button><span>Submit</span></button>
             </Form>
-            {
-                (this.state.message) ? (
-                    <div className="form-group">
-                        <div className="alert alert-danger" role="alert">
-                            {this.state.message}
-                        </div>
-                    </div>
-                ) : (<Link to="/profile"></Link>)
-            }
             </div>
         )
     }

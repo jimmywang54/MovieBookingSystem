@@ -8,7 +8,7 @@ export default class PaymentPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ticket: props.location.state.ticket,
+            ticket: [props.location.state.ticket],
             movie: props.location.state.movie
         }
 
@@ -17,7 +17,9 @@ export default class PaymentPage extends Component {
 
     handlePaying(e) {
         MovieService.bookTickets(this.state.ticket)
-            .then()
+            .catch(err => {
+                alert("Transaction Failed. Seat already bought.")
+            })
     }
 
     render() {
@@ -29,9 +31,9 @@ export default class PaymentPage extends Component {
                 <p>Hall: {movie.hallName}</p>
                 <p>Date: {movie.filmDate}</p>
                 <p>Time: {movie.filmTiming}</p>
-                <p>Seat: {ticket.seatNumber}</p>
-                <p>Row: {ticket.rowIndex}</p>
-                <p>Price: {ticket.price}</p>
+                <p>Seat: {ticket[0].seatNumber}</p>
+                <p>Row: {ticket[0].rowIndex}</p>
+                <p>Price: {ticket[0].price}</p>
 
                 <Button onClick={this.handlePaying}>Confirm</Button>
             </div>
