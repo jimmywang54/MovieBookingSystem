@@ -43,9 +43,9 @@ export default class PaymentPage extends Component {
                 <p>Price: {ticket[0].price}</p>
                 {
                     (localStorage.getItem("isCC") === null) ? (
-                        <Link to="/profile">
-                        <Button >Add Payment</Button>
-                        </Link>
+                        <div>
+                            <Button href='/profile'>Add Payment to buy ticket</Button>
+                        </div>
                     ) : (
                         <Button onClick={this.handlePaying}>Confirm</Button>
                     )
