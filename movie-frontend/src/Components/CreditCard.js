@@ -44,33 +44,28 @@ export default class CreditCard extends Component {
     }
 
     handleCardSubmit(e) {
-
-        this.setState({
-            isloading: true
-        })
-
+        e.preventDefault()
         var number = this.state.cardNumber.replace(/\s/g, '');
         var eMon = this.state.expiry.split("/")[0];
         var eYear = this.state.expiry.split("/")[1];
         UserService.addPayment(number, eMon, eYear, this.state.cvc)
             .then(res => {
                 this.setState({
-                    message: "Credit Card Successfully Added!",
-                    successful: true,
-                    isloading: false
+                    successful: true
                 })
-                console.log("In response")
-                this.props.history.push("/profile");
-                alert("Credit Successfully Added!")
-                // window.location.reload();
+                
+                alert("Credit Card Successfully Added!")
+                this.props.history.push("/");
+                window.location.reload();
             })
             .catch(err => {
-                console.log("In error")
-                this.setState({
-                    message: "Your card number is incorrect",
-                    isloading: false
-                })
+                
+                // this.setState({
+                //     message: "Your card number is incorrect",
+                //     isloading: false
+                // })
                 alert("Incorrect Credit Card Info!")
+                window.location.reload();
             })
     }
 

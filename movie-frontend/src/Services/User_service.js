@@ -29,14 +29,16 @@ class UserService {
         return axios.post(API_URL + 'addPayment', info, {
             headers: { 'Authorization': 'Bearer ' + authHeader() }
         }).then(res => {
-            console.log(res);
+            localStorage.setItem("isCC", true);
             return res.data;
-        })
-        .catch(err => console.log(err));
+        });
     }
 
     getHistory() {
-        return axios.get(API_URL + 'history', { headers: authHeader() });
+        return axios.get(API_URL + 'history', { headers: { 'Authorization': 'Bearer ' + authHeader() } })
+            .then(res => {
+                return res.data
+            })
     }
 }
 

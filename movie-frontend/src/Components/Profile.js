@@ -14,7 +14,8 @@ export default class Profile extends Component {
             currentUser: undefined,
             profile: undefined,
             firstName: "",
-            lastName: ""
+            lastName: "",
+            history: undefined
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,6 +32,9 @@ export default class Profile extends Component {
                 currentUser: user
             })
         }
+
+
+
         UserService.getProfile()
             .then(res => {
                 this.setState({
@@ -42,6 +46,16 @@ export default class Profile extends Component {
             .catch(err => {
                 console.log(err.message);
             })
+
+
+        UserService.getHistory()
+            .then(res => {
+                this.setState({
+                    
+                    history: res
+                })
+            })
+            .catch(err => console.log(err)); 
     }
 
     onChangeFirstName(e) {
@@ -68,7 +82,7 @@ export default class Profile extends Component {
 
     render() {
         const { profile } = this.state;
-        console.log(profile)
+        console.log(this.state.history)
         return (
             <div className="container">
                 <header className="jumbotron">
@@ -83,6 +97,7 @@ export default class Profile extends Component {
                         <Link to='/creditcard'>
                             <Button>Add Credit Card</Button>
                         </Link>
+                        
                     </div>
                 ) : (
                         <Form onSubmit={this.handleSubmit}>
@@ -107,6 +122,24 @@ export default class Profile extends Component {
                             <Button type='submit'>Upload Profile</Button>
                         </Form>
                     ))}
+
+                <div>
+                    <br></br>
+                    <h3>User History</h3>
+                    {
+                        this.state.history && (
+                            <ul>
+                                {
+                                    this.state.history.map(h => (
+                                    <li>{h.transactionId} - Movie: {h.filmName} - Theatre:{h.theatreName} - Price: {h.totalPrice}</li>
+                                    ))
+                                }
+                            </ul>
+                        )
+                        
+                        
+                    }
+                </div>
 
             </div>
         );

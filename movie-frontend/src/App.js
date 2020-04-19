@@ -54,7 +54,7 @@ class App extends Component {
 
   render() {
 
-    console.log(this.state.currentUser)
+    console.log(localStorage.getItem("isCC"))
     return (
       <Router>
         <div>
