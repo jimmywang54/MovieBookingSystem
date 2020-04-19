@@ -24,7 +24,7 @@ export default class PaymentPage extends Component {
                 window.location.reload();
             })
             .catch(err => {
-                alert("Transaction Failed. Seat already bought.")
+                alert("Transaction Failed. Need to add Credit Card Info.")
             })
     }
 

@@ -131,7 +131,8 @@ class BookingPage extends Component {
         if(e.target.value === "none") {
             this.setState({
                 selectTime: "",
-                selectHall: ""
+                selectHall: "",
+                selectSeats: undefined
             })
         }
     }
@@ -150,7 +151,8 @@ class BookingPage extends Component {
 
         if(e.target.value === "none") {
             this.setState({
-                selectHall: ""
+                selectHall: "",
+                selectSeats: undefined
             })
         }
     }
@@ -183,6 +185,12 @@ class BookingPage extends Component {
                     seats: res
                 })
             })
+
+        if(e.target.value === "none") {
+            this.setState({
+                selectSeats: undefined
+            })
+        }
     }
 
     handleSelectSeat(e) {
@@ -256,27 +264,32 @@ class BookingPage extends Component {
                     (this.state.finalMovie && selectDate !== "none" && selectTime !== "none" && selectHall !== "") &&
                     (
                         <div>
+                        <p>Select the Seats:</p>
                        <select name="selectSeat" onChange={this.handleSelectSeat}>
-                           <option key="none" value="none">Select Seat</option>
+                           <option key="none" value={undefined}>Select Seat</option>
                            {
                                 this.state.seats.map((seat, index) => (
                                     // <input type="checkbox" onChange={this.handleSelectSeat}>{seat.seatNumber}</input>
                                     <option key={seat.seatNumber} value={index}>{seat.seatNumber}</option>
                                 ))
                            }
-                       </select>
-                       <Link to={{
-                            pathname: '/paymentPage',
-                            state: {
-                                ticket: this.state.selectSeats,
-                                movie: this.state.finalMovie
-                            }
-                       }}
-                        >
-                           <Button>Confirm</Button>
-                       </Link>
+                       </select><br/>
                        </div>
+                       
                     )
+                }
+                {
+                    this.state.selectSeats &&
+                    <Link to={{
+                        pathname: '/paymentPage',
+                        state: {
+                            ticket: this.state.selectSeats,
+                            movie: this.state.finalMovie
+                        }
+                   }}
+                    >
+                       <Button>Confirm</Button>
+                   </Link>
                 }
             </div>
         );
