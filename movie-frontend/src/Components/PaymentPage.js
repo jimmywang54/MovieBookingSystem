@@ -1,36 +1,39 @@
 import React, { Component } from "react";
+import { Button } from "react-bootstrap";
+import MovieService from "../Services/Movie_service";
 
-import StripeCheckout from 'react-stripe-checkout';
-
-const STRIPE_PUBLIC_KEY = "pk_test_rXmcKk4Mgsl8VbhTWGWennwg0066CCssRI";
 
 export default class PaymentPage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            seat: props.location.state.seat,
-            filmSessionId: props.location.state.filmSessionId
-            
+            ticket: props.location.state.ticket,
+            movie: props.location.state.movie
         }
 
-        this.handleToken = this.handleToken.bind(this);
+        this.handlePaying = this.handlePaying.bind(this);
     }
 
-    handleToken(token, address) {
-        console.log({token, address});
+    handlePaying(e) {
+        MovieService.bookTickets(this.state.ticket)
+            .then()
     }
 
     render() {
+        const { ticket, movie } = this.state;
         return(
             <div>
-                <h1>{this.state.movieName}</h1>
-                <StripeCheckout 
-                    stripeKey={STRIPE_PUBLIC_KEY}
-                    token={this.handleToken}
-                    amount={this.state.price * 100}
-                    name={this.state.movieName}
-                />
+                <h2>Payment Page</h2>
+                <p>Movie: {movie.filmName}</p>
+                <p>Hall: {movie.hallName}</p>
+                <p>Date: {movie.filmDate}</p>
+                <p>Time: {movie.filmTiming}</p>
+                <p>Seat: {ticket.seatNumber}</p>
+                <p>Row: {ticket.rowIndex}</p>
+                <p>Price: {ticket.price}</p>
+
+                <Button onClick={this.handlePaying}>Confirm</Button>
             </div>
         );
     }

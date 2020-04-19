@@ -54,7 +54,7 @@ class App extends Component {
 
   render() {
 
-    console.log(this.state.theaters)
+    // console.log(this.state.currentUser)
     return (
       <Router>
         <div>

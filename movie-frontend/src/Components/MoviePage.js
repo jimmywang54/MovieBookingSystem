@@ -21,14 +21,16 @@ class MoviePage extends Component {
     }
 
     componentDidMount() {
-        console.log(this.state.theater.theatreId)
+        // console.log(this.state.theater.theatreId)
         MovieService.getMovieByTheatreId(this.state.theater.theatreId)
-        // MovieService.getAllMovies()
             .then(res => {
                 this.setState({
                     moviesList: res
                 })
             })
+
+        
+        
     }
 
     handleSelectDate(e) {
@@ -39,9 +41,10 @@ class MoviePage extends Component {
 
 
     render() {
+
         // const { moviesList, theater, movieDate } = this.state;
-        const { moviesList, theater, movieDate} = this.state;
-        console.log(moviesList)
+        const { moviesList, theater} = this.state;
+        // console.log(moviesList)
         return (
             <div>
                 <div>

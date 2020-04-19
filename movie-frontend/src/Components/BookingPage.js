@@ -13,31 +13,56 @@ class BookingPage extends Component {
             currentUser: AuthService.getCurrentUser(),
             movie: props.location.state.movie,
             theater: props.location.state.theater,
-            movieDetail: MovieService.getMovieDetails(props.location.state.movie.filmId)
-                .filter(movie => (movie.theatreId === props.location.state.theater.theatreId)),
+            movieDetail: undefined,
             selectDate: undefined,
             selectTime: undefined,
             flag: true,
             currentMovie: props.location.state.movie,
             times: [],
             seats: [],
-            selectSeat: [],
+            selectSeat: undefined,
             movieDate: ["2020-04-24", "2020-04-25", "2020-04-26", "2020-04-27"]
         }
 
+        // console.log(this.state.movie);
         this.handleSelectDate = this.handleSelectDate.bind(this);
         this.handleSelectTime = this.handleSelectTime.bind(this);
         this.handleSelectSeat = this.handleSelectSeat.bind(this);
     }
 
+    componentDidMount() {
+        var movieForTheatre = [];
+
+        MovieService.getMovieDetails(this.state.movie.filmId)
+            .then(res => {
+                res.map(movie => {
+                    if (movie.theatreId === this.state.theater.theatreId) {
+                        movieForTheatre.push(movie);
+                    }
+                })
+            });
+
+        this.setState({
+            movieDetail: movieForTheatre
+        })
+
+        console.log(this.state.movieDetail);
+    }       
+    
+
 
     handleSelectDate(e) {
         let m = this.state.movieDetail.filter(movie => (movie.filmDate === e.target.value));
-
-        this.setState({
-            selectDate: e.target.value,
-            movieDetail: m
-        })
+        console.log(this.state.movieDetail)
+        console.log(m);
+        if(m.length > 0) {
+            this.setState({
+                selectDate: e.target.value,
+                movieDetail: m,
+                isDate: true
+            })
+        }
+        
     }
 
     handleSelectTime(e) {
@@ -46,21 +71,37 @@ class BookingPage extends Component {
         this.setState({
             selectTime: e.target.value,
             movieDetail: m,
-            seats: MovieService.getMovieLayout(m)
         });
+
+        // console.log(m);
+
+        MovieService.getMovieLayout(m[0].filmSessionId)
+            .then(res => {
+                this.setState({
+                    seats: res.data,
+                    movieDetail: m[0]
+                })
+            })
+            .catch(err => {
+                console.log(err.message);
+            })
     }
 
     handleSelectSeat(e) {
 
         this.setState({
-            selectSeat: [e.target.value]
+            selectSeat: this.state.seats[e.target.value]
         })
     }
 
     render() {
-        const { movie, movieDetail, currentUser, seats, selectDate } = this.state;
-        // console.log(movieDetail)
-        console.log(this.state.selectDate)
+        const { movie, movieDetail, currentUser, seats, selectDate, selectTime, selectSeat } = this.state;
+        console.log(movieDetail)
+        console.log("Select Date: " + selectDate)
+        console.log("Select Time: " + selectTime)
+        console.log(seats)
+        console.log(selectSeat)
+        // console.log(selectDate)
         // console.log(this.state.currentMovie.filmSessionId)
 
         if (movieDetail && this.state.flag) {
@@ -72,7 +113,6 @@ class BookingPage extends Component {
         }
 
         return (
-
             <div>
                 <p>The movie you want to book:</p>
                 <p>Name: {movie.name}</p>
@@ -90,7 +130,7 @@ class BookingPage extends Component {
                 </select>
                         
                 {
-                    (!this.state.selectDate || this.state.selectDate === "none") ? (
+                    ((!this.state.selectDate || this.state.selectDate === "none")) ? (
                         <div></div>
                     ): (
                         <div>
@@ -116,13 +156,13 @@ class BookingPage extends Component {
                             <div>
                                 <label>
                                     Select a Seat:
-                                    </label>
+                                    </label><br/>
                                 <select onChange={this.handleSelectSeat}>
 
                                     <option key="none" value="none">Select</option>
                                     {
-                                        seats.map(seat => (
-                                            <option key={seat.seatNumber} value={seat.seatNumber}>{seat.seatNumber}</option>
+                                        seats.map((seat, index) => (
+                                            <option key={seat.seatNumber} value={index}>{seat.seatNumber}</option>
                                         ))
                                     }
                                 </select>
@@ -135,8 +175,8 @@ class BookingPage extends Component {
                     <Link to={{
                         pathname: '/paymentPage',
                         state: {
-                            seat: this.state.selectSeat,
-                            // filmSessionId: this.state.currentMovie.filmSessionId
+                            ticket: this.state.selectSeat,
+                            movie: this.state.movieDetail
                         }
                     }}>
                         <Button variant="primary" >Book</Button>{' '}

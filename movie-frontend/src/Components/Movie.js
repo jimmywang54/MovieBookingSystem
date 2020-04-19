@@ -16,13 +16,18 @@ class Movie extends Component {
     }
 
     componentDidMount() {
-        this.setState({
-            movieDetails: MovieService.getMovieDetails(this.state.movie.id)
-        });
+
+        MovieService.getMovieDetails(this.state.movie.filmId)
+            .then(res => {
+                this.setState({
+                    movieDetails: res.data
+                })
+            })
+            .catch(err => console.log(err));
     }
 
     render() {
-        const { movie, movieDetails, theater, filmDate } = this.state;
+        const { movie, movieDetails, theater } = this.state;
         console.log(movieDetails);
         return (
             <div>

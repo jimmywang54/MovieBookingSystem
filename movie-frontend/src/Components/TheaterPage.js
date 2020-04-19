@@ -39,7 +39,7 @@ class TheaterPage extends Component {
     render() {
         // console.log(this.state.theaters)
         // console.log("Theater Id: " + this.state.theatreId)
-        console.log(this.state.currentUser)
+        // console.log(this.state.currentUser)
         return (
             <div>
                 { this.state.theaters &&
