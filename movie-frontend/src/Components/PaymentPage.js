@@ -18,7 +18,7 @@ export default class PaymentPage extends Component {
     handlePaying(e) {
         MovieService.bookTickets(this.state.ticket)
             .catch(err => {
-                alert("Transaction Failed. Seat already bought.")
+                alert("Transaction Failed. Need to add Credit Card Info.")
             })
     }
 
