@@ -43,10 +43,11 @@ export default class CreditCard extends Component {
 
     handleCardSubmit(e) {
         e.preventDefault()
-        var number = this.state.cardNumber.replace(/\s/g, '');
-        var eMon = this.state.expiry.split("/")[0];
-        var eYear = this.state.expiry.split("/")[1];
-        UserService.addPayment(number, eMon, eYear, this.state.cvc)
+        var number = parseInt(this.state.cardNumber.replace(/\s/g, ''));
+        var eMon = parseInt(this.state.expiry.split("/")[0]);
+        var eYear = parseInt(this.state.expiry.split("/")[1]) + 2000;
+        var c = parseInt(this.state.cvc);
+        UserService.addPayment(number, eMon, eYear, c)
             .then(res => {
                 this.setState({
                     successful: true

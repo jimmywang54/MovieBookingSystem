@@ -12,7 +12,7 @@ export default class Profile extends Component {
 
         this.state = {
             currentUser: undefined,
-            profile: undefined,
+            isProfile: false,
             firstName: "",
             lastName: "",
             history: undefined
@@ -33,14 +33,12 @@ export default class Profile extends Component {
             })
         }
 
-
-
         UserService.getProfile()
             .then(res => {
                 this.setState({
-                    profile: res.data,
                     firstName: res.data.firstName,
-                    lastName: res.data.lastName
+                    lastName: res.data.lastName,
+                    isProfile: true
                 });
             })
             .catch(err => {
@@ -70,25 +68,29 @@ export default class Profile extends Component {
         })
     }
     handleSubmit(e) {
+        e.preventDefault();
         this.setState({
-            profile: {
-                firstName: this.state.firstName,
-                lastName: this.state.lastName
-            }
+            firstName: this.state.firstName,
+            lastName: this.state.lastName
         })
 
-        UserService.saveProfile(this.state.firstName, this.state.lastName);
+        UserService.saveProfile(this.state.firstName, this.state.lastName)
+            .then(() => {
+                this.setState({
+                    isProfile: true
+                })
+            })
     }
 
     render() {
-        const { profile } = this.state;
-        console.log(this.state.history)
+        const { isProfile } = this.state;
+        console.log(isProfile)
         return (
             <div className="container">
                 <header className="jumbotron">
                     <h3>Profile</h3>
                 </header>
-                {(profile ? (
+                {(isProfile ? (
                     <div>
                         <h3>First Name: </h3>
                         {this.state.firstName} <br/>
