@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import MovieService from "../Services/Movie_service";
-import { Link } from "react-router-dom";
 
 
 export default class PaymentPage extends Component {

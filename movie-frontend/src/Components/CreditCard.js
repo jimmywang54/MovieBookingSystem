@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import CreditCardInput from 'react-credit-card-input';
-import { Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom"
-
+import { Form } from "react-bootstrap";
 import UserService from '../Services/User_service';
 
 export default class CreditCard extends Component {

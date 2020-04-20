@@ -131,7 +131,7 @@ export default class Profile extends Component {
                             <ul>
                                 {
                                     this.state.history.map(h => (
-                                    <li>{h.transactionId} - Movie: {h.filmName} - Theatre:{h.theatreName} - Price: {h.totalPrice}</li>
+                                    <li key={h.transactionId}>{h.transactionId} - Movie: {h.filmName} - Theatre:{h.theatreName} - Price: {h.totalPrice}</li>
                                     ))
                                 }
                             </ul>
