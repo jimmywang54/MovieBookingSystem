@@ -30,7 +30,7 @@ class App extends Component {
 
   componentDidMount() {
     const user = AuthService.getCurrentUser();
-
+    console.log("in componentdidmount")
     MovieService.getTheaters()
       .then(res => {
         this.setState({
@@ -54,7 +54,7 @@ class App extends Component {
 
   render() {
 
-    console.log(localStorage.getItem("isCC"))
+    console.log(this.state.currentUser);
     return (
       <Router>
         <div>
@@ -124,7 +124,7 @@ class App extends Component {
               <Route exact path={["/", "/main"]} render={() => <MainPage />} />
               <Route exact path="/movies" render={(props) => <MoviePage {... props}/>} />
               <Route exact path="/theaters/:theatreId" render={(props) => <TheaterPage {... props} />} />
-              <Route exact path="/register" render={() => <RegisterPage />} />
+              <Route exact path="/register" render={(props) => <RegisterPage {...props} />} />
               <Route exact path="/login" render={(props) => <SignInPage {...props} />} />
               <Route exact path="/profile" component={Profile} />
               <Route exact path="/creditcard" component={CreditCard}/>

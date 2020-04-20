@@ -27,15 +27,6 @@ const vusername = value => {
     }
 };
 
-// const vusername = value => {
-//     if (value.length < 3 || value.length > 20) {
-//         return (
-//             <div className="alert alert-danger" role="alert">
-//                 The username must be between 3 and 20 characters.
-//             </div>
-//         );
-//     }
-// };
 
 const vpassword = value => {
     if (value.length < 6 || value.length > 40) {
@@ -95,6 +86,10 @@ class RegisterPage extends Component {
                         message: "Successful Registered",
                         successful: true
                     });
+
+                    this.props.history.push("/");
+                    alert(this.state.message);
+                    window.location.reload();
                 },
                 error => {
                     console.log("In error")

@@ -83,8 +83,8 @@ export default class Profile extends Component {
     }
 
     render() {
-        const { isProfile } = this.state;
-        console.log(isProfile)
+        const { isProfile, history } = this.state;
+        console.log(history)
         return (
             <div className="container">
                 <header className="jumbotron">
@@ -133,7 +133,7 @@ export default class Profile extends Component {
                             <ul>
                                 {
                                     this.state.history.map(h => (
-                                    <li key={h.transactionId}>{h.transactionId} - Movie: {h.filmName} - Theatre:{h.theatreName} - Price: {h.totalPrice}</li>
+                                    <li key={h.transactionId}>{h.transactionId} - Movie: <b>{h.filmName}</b> - Theatre: <b>{h.theatreName}</b> - Price: <b>{h.totalPrice}</b></li>
                                     ))
                                 }
                             </ul>

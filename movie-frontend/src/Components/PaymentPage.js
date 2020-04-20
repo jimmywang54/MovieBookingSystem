@@ -16,7 +16,7 @@ export default class PaymentPage extends Component {
     }
 
     handlePaying(e) {
-        MovieService.bookTickets(this.state.ticket)
+        MovieService.bookTickets(this.state.ticket, this.state.movie)
             .then(res => {
                 alert("Booking Successful");
                 this.props.history.push("/");
@@ -30,6 +30,8 @@ export default class PaymentPage extends Component {
     render() {
         const { ticket, movie } = this.state;
         console.log("Credit Card: " + localStorage.getItem("isCC"))
+        console.log(movie);
+        console.log(ticket)
         return(
             <div>
                 <h2>Payment Page</h2>

@@ -38,6 +38,7 @@ class AuthService {
             headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}
         })
         .then(res => {
+            this.login(username, password);
             console.log(res.data)
             return res.data
         })
