@@ -1,0 +1,73 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: backend-ingress
+  namespace: api
+  annotations:
+     kubernetes.io/ingress.class: nginx
+     nginx.ingress.kubernetes.io/affinity: "cookie"
+     nginx.ingress.kubernetes.io/session-cookie-name: "route"
+     nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
+     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+     nginx.ingress.kubernetes.io/cors-allow-methods: "POST, PUT, GET, DELETE, OPTIONS"
+     nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+     nginx.ingress.kubernetes.io/enable-cors: "true"
+     nginx.ingress.kubernetes.io/use-regex: "true"
+
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /v1/register
+        backend:
+          serviceName: admin-backend
+          servicePort: 8080
+      - path: /v1/authenticate
+        backend:
+          serviceName: admin-backend
+          servicePort: 8080
+
+      - path: /v1/profile
+        backend:
+          serviceName: backend
+          servicePort: 8080
+      - path: /v1/addPayment
+        backend:
+          serviceName: backend
+          servicePort: 8080
+      - path: /v1/history
+        backend:
+          serviceName: backend
+          servicePort: 8080
+      - path: /health
+        backend:
+          serviceName: backend
+          servicePort: 8080
+      - path: /v1/theatres
+        backend:
+          serviceName: backend
+          servicePort: 8080
+      - path: /v1/movies
+        backend:
+          serviceName: backend
+          servicePort: 8080
+      - path: /v1/moviesFromTheatre/(.+)
+        backend:
+          serviceName: backend
+          servicePort: 8080
+      - path: /v1/showDetailsFromMovie/(.+)
+        backend:
+          serviceName: backend
+          servicePort: 8080
+      - path: /v1/getMovieLayout/(.+)
+        backend:
+          serviceName: backend
+          servicePort: 8080
+      - path: /v1/bookTickets/(.+)
+        backend:
+          serviceName: backend
+          servicePort: 8080
+      - path: /actuator/prometheus
+        backend:
+          serviceName: backend
+          servicePort: 8080

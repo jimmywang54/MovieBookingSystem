@@ -1,0 +1,10 @@
+
+- name: Create Jenkins ServiceAccount.
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: jenkins-sa
+        namespace: default

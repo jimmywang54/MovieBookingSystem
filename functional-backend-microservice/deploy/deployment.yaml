@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: api
+  labels:
+    app: backend
+    group: csye7200
+spec:
+  # modify replicas according to your case
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: csye7200-backend
+        image: mitalisalvi/ticket-reservation-backend:latest
+        imagePullPolicy: Always
+        ports:
+          - { containerPort: 8080,  protocol: TCP }
+        env:
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: credentials
+                key: user
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: credentials
+                key: password
+          - name: MYSQL_HOST
+            valueFrom:
+              secretKeyRef:
+                name: credentials
+                key: host
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: credentials
+                key: AWS_ACCESS_KEY_ID
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: credentials
+                key: AWS_SECRET_ACCESS_KEY
+          - name: stripeKey
+            valueFrom:
+              secretKeyRef:
+                name: credentials
+                key: stripeKey
+          # - name: ES_ELB
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: credentials
+          #       key: elb
+        resources:
+          requests:
+            memory: "2048Mi"
+            cpu: "1"
+          limits:
+            memory: "2048Mi"
+            cpu: "1"
+      imagePullSecrets:
+        - name: mysecret
+      serviceAccountName: backend
